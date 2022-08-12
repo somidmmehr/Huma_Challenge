@@ -3,7 +3,7 @@ from .models import CustomUser
 from protos import account_pb2
 
 
-class PostProtoSerializer(proto_serializers.ModelProtoSerializer):
+class UserProtoSerializer(proto_serializers.ModelProtoSerializer):
     class Meta:
         model = CustomUser
         proto_class = account_pb2.User
