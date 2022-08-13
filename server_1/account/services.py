@@ -22,7 +22,7 @@ class CustomUserService(Service):
         try:
             return CustomUser.objects.get(pk=pk)
         except CustomUser.DoesNotExist:
-            self.context.abort(grpc.StatusCode.NOT_FOUND, 'User:%s not found!' % pk)
+            self.context.abort(grpc.StatusCode.NOT_FOUND, f'User id {pk} not found!')
 
     def Retrieve(self, request, context):
         user = self.get_object(request.id)

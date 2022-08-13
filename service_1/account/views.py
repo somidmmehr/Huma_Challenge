@@ -8,58 +8,64 @@ from protos import account_pb2_grpc, account_pb2
 
 class UserViewSet(viewsets.ViewSet):
     def list(self, request):
-        try:
-            with grpc.insecure_channel('localhost:50051') as channel:
-                stub = account_pb2_grpc.UserControllerStub(channel)
+        with grpc.insecure_channel('localhost:50051') as channel:
+            stub = account_pb2_grpc.UserControllerStub(channel)
+            try:
                 response = stub.List(account_pb2.UserListRequest())
-                users = UserSerializer(response, many=True)
-                return Response(users.data, status=status.HTTP_200_OK)
-        except _InactiveRpcError as exception:
-            return Response(exception.details(), status=status.HTTP_404_NOT_FOUND)
+            except _InactiveRpcError as exception:
+                return Response(exception.details(), status=status.HTTP_404_NOT_FOUND)
+
+            users = UserSerializer(response, many=True)
+            return Response(users.data, status=status.HTTP_200_OK)
 
     def create(self, request):
         user_serializer = UserSerializer(data=request.data)
         user_serializer.is_valid(raise_exception=True)
-        try:
-            with grpc.insecure_channel('localhost:50051') as channel:
-                stub = account_pb2_grpc.UserControllerStub(channel)
-                response = stub.Create(account_pb2.User(username=request.get('username'),
+
+        with grpc.insecure_channel('localhost:50051') as channel:
+            stub = account_pb2_grpc.UserControllerStub(channel)
+            try:
+                response = stub.Create(account_pb2.User(username=request.data.get('username'),
                                                         email=request.data.get('email')))
-                user_serializer = UserSerializer(response)
-                return Response(user_serializer.data, status=status.HTTP_201_CREATED)
-        except _InactiveRpcError as exception:
-            return Response(exception.details(), status=status.HTTP_404_NOT_FOUND)
+            except _InactiveRpcError as exception:
+                return Response(exception.details(), status=status.HTTP_406_NOT_ACCEPTABLE)
+
+            user_serializer = UserSerializer(response)
+            return Response(user_serializer.data, status=status.HTTP_201_CREATED)
 
     def retrieve(self, request, pk=None):
-        try:
-            with grpc.insecure_channel('localhost:50051') as channel:
-                stub = account_pb2_grpc.UserControllerStub(channel)
+        with grpc.insecure_channel('localhost:50051') as channel:
+            stub = account_pb2_grpc.UserControllerStub(channel)
+            try:
                 response = stub.Retrieve(account_pb2.UserRetrieveRequest(id=pk))
-                user = UserSerializer(response)
-                return Response(user.data, status=status.HTTP_200_OK)
-        except _InactiveRpcError as exception:
-            return Response(exception.details(), status=status.HTTP_404_NOT_FOUND)
+            except _InactiveRpcError as exception:
+                return Response(exception.details(), status=status.HTTP_404_NOT_FOUND)
+
+            user = UserSerializer(response)
+            return Response(user.data, status=status.HTTP_200_OK)
 
     def update(self, request, pk=None):
         user_serializer = UserSerializer(data=request.data)
         user_serializer.is_valid(raise_exception=True)
-        try:
-            with grpc.insecure_channel('localhost:50051') as channel:
-                stub = account_pb2_grpc.UserControllerStub(channel)
+
+        with grpc.insecure_channel('localhost:50051') as channel:
+            stub = account_pb2_grpc.UserControllerStub(channel)
+            try:
                 response = stub.Update(account_pb2.User(id=pk,
                                                         username=request.data.get('username'),
                                                         email=request.data.get('email')))
-                user_serializer = UserSerializer(response)
-                return Response(user_serializer.data, status=status.HTTP_202_ACCEPTED)
-        except _InactiveRpcError as exception:
-            return Response(exception.details(), status=status.HTTP_404_NOT_FOUND)
+            except _InactiveRpcError as exception:
+                return Response(exception.details(), status=status.HTTP_404_NOT_FOUND)
+
+            user_serializer = UserSerializer(response)
+            return Response(user_serializer.data, status=status.HTTP_202_ACCEPTED)
 
     def destroy(self, request, pk=None):
-        try:
-            with grpc.insecure_channel('localhost:50051') as channel:
-                stub = account_pb2_grpc.UserControllerStub(channel)
-                response = stub.Destroy(account_pb2.UserRetrieveRequest(id=pk))
-                user = UserSerializer(response)
-                return Response(None, status=status.HTTP_200_OK)
-        except _InactiveRpcError as exception:
-            return Response(exception.details(), status=status.HTTP_404_NOT_FOUND)
+        with grpc.insecure_channel('localhost:50051') as channel:
+            stub = account_pb2_grpc.UserControllerStub(channel)
+            try:
+                stub.Destroy(account_pb2.UserRetrieveRequest(id=pk))
+            except _InactiveRpcError as exception:
+                return Response(exception.details(), status=status.HTTP_404_NOT_FOUND)
+
+            return Response(None, status=status.HTTP_200_OK)

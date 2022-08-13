@@ -1,3 +1,5 @@
+from rest_framework import serializers
+from account.models import CustomUser
 from protos import account_pb2
 from django.contrib.auth import get_user_model
 from django_grpc_framework import proto_serializers
@@ -10,3 +12,9 @@ class UserProtoSerializer(proto_serializers.ModelProtoSerializer):
         model = User
         proto_class = account_pb2.User
         fields = ['id', 'username', 'email', 'groups']
+
+    def validate(self, attrs):
+        if CustomUser.objects.filter(email=attrs.get('email')).first():
+            raise serializers.ValidationError("Email has been used before!")
+
+        return attrs
