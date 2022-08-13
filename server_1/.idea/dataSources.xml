@@ -8,5 +8,12 @@
       <jdbc-url>jdbc:sqlite:C:\Users\pc\Desktop\Huma_Challenge\server_1\db.sqlite3</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="DjangoGRPC@localhost" uuid="6014ad7b-c2ab-43c1-b8c5-2c61e7b927b2">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://localhost:5432/DjangoGRPC</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>
