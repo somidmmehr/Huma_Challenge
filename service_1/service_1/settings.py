@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'account.apps.AccountConfig',
     'rest_framework',
+    'rest_framework.authtoken'
 ]
 
 MIDDLEWARE = [
@@ -132,3 +133,9 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:8002",
     "http://127.0.0.1:8002",
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ]
+}
