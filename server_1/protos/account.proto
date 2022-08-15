@@ -3,6 +3,7 @@ syntax = "proto3";
 package account;
 
 import "google/protobuf/empty.proto";
+import "google/protobuf/struct.proto";
 
 service UserController {
     rpc List(UserListRequest) returns (stream User) {}
@@ -22,6 +23,15 @@ message User {
 message UserListRequest {
 }
 
+message NullableString {
+    oneof kind {
+        string value = 1;
+        google.protobuf.NullValue null = 2;
+    }
+}
+
 message UserRetrieveRequest {
     int32 id = 1;
+    NullableString username = 2;
+    NullableString password = 3;
 }

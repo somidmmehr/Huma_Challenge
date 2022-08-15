@@ -18,3 +18,19 @@ class UserProtoSerializer(proto_serializers.ModelProtoSerializer):
             raise serializers.ValidationError("Email has been used before!")
 
         return attrs
+
+    def message_to_data(self, message):
+        data = {
+            'id': message.id,
+        }
+        if message.username.HasField('value'):
+            data['username'] = message.username.value
+        elif message.username.HasField('null'):
+            data['username'] = None
+
+        if message.password.HasField('value'):
+            data['password'] = message.password.value
+        elif message.password.HasField('null'):
+            data['password'] = None
+
+        return data
