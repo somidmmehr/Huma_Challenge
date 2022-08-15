@@ -26,7 +26,8 @@ class UserViewSet(viewsets.ViewSet):
             stub = account_pb2_grpc.UserControllerStub(channel)
             try:
                 response = stub.Create(account_pb2.User(username=request.data.get('username'),
-                                                        email=request.data.get('email')))
+                                                        email=request.data.get('email'),
+                                                        password=request.data.get('password')))
             except _InactiveRpcError as exception:
                 return Response(exception.details(), status=status.HTTP_406_NOT_ACCEPTABLE)
 
