@@ -3,7 +3,7 @@ from django_grpc_framework import generics
 from google.protobuf import empty_pb2
 from django_grpc_framework.services import Service
 from .models import CustomUser
-from .serializers import UserProtoSerializer
+from .serializers import UserProtoSerializer, UserRetrieveProtoSerializer
 
 
 # class CustomUserService(generics.ModelService):
@@ -30,9 +30,23 @@ class CustomUserService(Service):
         except CustomUser.DoesNotExist:
             self.context.abort(grpc.StatusCode.NOT_FOUND, f'User id {pk} not found!')
 
+    def auth_object(self, username, password):
+        user = CustomUser.objects.filter(username=username).first()
+        if user is None:
+            self.context.abort(grpc.StatusCode.NOT_FOUND, f'User by username {username} not found!')
+
+        if not user.check_password(password):
+            self.context.abort(grpc.StatusCode.NOT_FOUND, f'Incorrect password!')
+
+        return user
+
     def Retrieve(self, request, context):
-        user = self.get_object(request.id)
-        serializer = UserProtoSerializer(user)
+        if request.id == 0:
+            user = self.auth_object(request.username.value, request.password.value)
+        else:
+            user = self.get_object(request.id)
+
+        serializer = UserRetrieveProtoSerializer(user)
         return serializer.message
 
     def Update(self, request, context):

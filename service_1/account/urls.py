@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import UserViewSet
+from .views import UserViewSet, LoginView
 
 urlpatterns = [
     path('', UserViewSet.as_view({
@@ -11,4 +11,5 @@ urlpatterns = [
         'put': 'update',
         'delete': 'destroy'
     })),
+    path('login/', LoginView.as_view())
 ]
