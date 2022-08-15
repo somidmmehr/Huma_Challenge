@@ -1,15 +1,12 @@
 import grpc
 from grpc._channel import _InactiveRpcError
 from rest_framework import viewsets, status
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from account.serializers import UserSerializer
 from protos import account_pb2_grpc, account_pb2
 
 
 class UserViewSet(viewsets.ViewSet):
-    permission_classes = (IsAuthenticated, )
-
     def list(self, request):
         with grpc.insecure_channel('localhost:50051') as channel:
             stub = account_pb2_grpc.UserControllerStub(channel)
