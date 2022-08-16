@@ -14,13 +14,15 @@ _sym_db = _symbol_database.Default()
 
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 from google.protobuf import struct_pb2 as google_dot_protobuf_dot_struct__pb2
+from google.protobuf import wrappers_pb2 as google_dot_protobuf_dot_wrappers__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x14protos/account.proto\x12\x07\x61\x63\x63ount\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1cgoogle/protobuf/struct.proto\"U\n\x04User\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x10\n\x08username\x18\x02 \x01(\t\x12\r\n\x05\x65mail\x18\x03 \x01(\t\x12\x10\n\x08password\x18\x04 \x01(\t\x12\x0e\n\x06groups\x18\x05 \x03(\x05\"\x11\n\x0fUserListRequest\"U\n\x0eNullableString\x12\x0f\n\x05value\x18\x01 \x01(\tH\x00\x12*\n\x04null\x18\x02 \x01(\x0e\x32\x1a.google.protobuf.NullValueH\x00\x42\x06\n\x04kind\"w\n\x13UserRetrieveRequest\x12\n\n\x02id\x18\x01 \x01(\x05\x12)\n\x08username\x18\x02 \x01(\x0b\x32\x17.account.NullableString\x12)\n\x08password\x18\x03 \x01(\x0b\x32\x17.account.NullableString2\x88\x02\n\x0eUserController\x12\x33\n\x04List\x12\x18.account.UserListRequest\x1a\r.account.User\"\x00\x30\x01\x12(\n\x06\x43reate\x12\r.account.User\x1a\r.account.User\"\x00\x12\x39\n\x08Retrieve\x12\x1c.account.UserRetrieveRequest\x1a\r.account.User\"\x00\x12(\n\x06Update\x12\r.account.User\x1a\r.account.User\"\x00\x12\x32\n\x07\x44\x65stroy\x12\r.account.User\x1a\x16.google.protobuf.Empty\"\x00\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x14protos/account.proto\x12\x07\x61\x63\x63ount\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1egoogle/protobuf/wrappers.proto\"U\n\x04User\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x10\n\x08username\x18\x02 \x01(\t\x12\r\n\x05\x65mail\x18\x03 \x01(\t\x12\x10\n\x08password\x18\x04 \x01(\t\x12\x0e\n\x06groups\x18\x05 \x03(\x05\"\xc3\x01\n\x18UserPartialUpdateRequest\x12\n\n\x02id\x18\x01 \x01(\x05\x12.\n\x08username\x18\x02 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12+\n\x05\x65mail\x18\x03 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12.\n\x08password\x18\x04 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x0e\n\x06groups\x18\x05 \x03(\x05\"\x11\n\x0fUserListRequest\"U\n\x0eNullableString\x12\x0f\n\x05value\x18\x01 \x01(\tH\x00\x12*\n\x04null\x18\x02 \x01(\x0e\x32\x1a.google.protobuf.NullValueH\x00\x42\x06\n\x04kind\"w\n\x13UserRetrieveRequest\x12\n\n\x02id\x18\x01 \x01(\x05\x12)\n\x08username\x18\x02 \x01(\x0b\x32\x17.account.NullableString\x12)\n\x08password\x18\x03 \x01(\x0b\x32\x17.account.NullableString2\xcd\x02\n\x0eUserController\x12\x33\n\x04List\x12\x18.account.UserListRequest\x1a\r.account.User\"\x00\x30\x01\x12(\n\x06\x43reate\x12\r.account.User\x1a\r.account.User\"\x00\x12\x39\n\x08Retrieve\x12\x1c.account.UserRetrieveRequest\x1a\r.account.User\"\x00\x12(\n\x06Update\x12\r.account.User\x1a\r.account.User\"\x00\x12\x32\n\x07\x44\x65stroy\x12\r.account.User\x1a\x16.google.protobuf.Empty\"\x00\x12\x43\n\rPartialUpdate\x12!.account.UserPartialUpdateRequest\x1a\r.account.User\"\x00\x62\x06proto3')
 
 
 
 _USER = DESCRIPTOR.message_types_by_name['User']
+_USERPARTIALUPDATEREQUEST = DESCRIPTOR.message_types_by_name['UserPartialUpdateRequest']
 _USERLISTREQUEST = DESCRIPTOR.message_types_by_name['UserListRequest']
 _NULLABLESTRING = DESCRIPTOR.message_types_by_name['NullableString']
 _USERRETRIEVEREQUEST = DESCRIPTOR.message_types_by_name['UserRetrieveRequest']
@@ -30,6 +32,13 @@ User = _reflection.GeneratedProtocolMessageType('User', (_message.Message,), {
   # @@protoc_insertion_point(class_scope:account.User)
   })
 _sym_db.RegisterMessage(User)
+
+UserPartialUpdateRequest = _reflection.GeneratedProtocolMessageType('UserPartialUpdateRequest', (_message.Message,), {
+  'DESCRIPTOR' : _USERPARTIALUPDATEREQUEST,
+  '__module__' : 'protos.account_pb2'
+  # @@protoc_insertion_point(class_scope:account.UserPartialUpdateRequest)
+  })
+_sym_db.RegisterMessage(UserPartialUpdateRequest)
 
 UserListRequest = _reflection.GeneratedProtocolMessageType('UserListRequest', (_message.Message,), {
   'DESCRIPTOR' : _USERLISTREQUEST,
@@ -56,14 +65,16 @@ _USERCONTROLLER = DESCRIPTOR.services_by_name['UserController']
 if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
-  _USER._serialized_start=92
-  _USER._serialized_end=177
-  _USERLISTREQUEST._serialized_start=179
-  _USERLISTREQUEST._serialized_end=196
-  _NULLABLESTRING._serialized_start=198
-  _NULLABLESTRING._serialized_end=283
-  _USERRETRIEVEREQUEST._serialized_start=285
-  _USERRETRIEVEREQUEST._serialized_end=404
-  _USERCONTROLLER._serialized_start=407
-  _USERCONTROLLER._serialized_end=671
+  _USER._serialized_start=124
+  _USER._serialized_end=209
+  _USERPARTIALUPDATEREQUEST._serialized_start=212
+  _USERPARTIALUPDATEREQUEST._serialized_end=407
+  _USERLISTREQUEST._serialized_start=409
+  _USERLISTREQUEST._serialized_end=426
+  _NULLABLESTRING._serialized_start=428
+  _NULLABLESTRING._serialized_end=513
+  _USERRETRIEVEREQUEST._serialized_start=515
+  _USERRETRIEVEREQUEST._serialized_end=634
+  _USERCONTROLLER._serialized_start=637
+  _USERCONTROLLER._serialized_end=970
 # @@protoc_insertion_point(module_scope)

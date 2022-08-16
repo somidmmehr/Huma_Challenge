@@ -54,15 +54,17 @@ class UserViewSet(viewsets.ViewSet):
             return Response(user.data, status=status.HTTP_200_OK)
 
     def update(self, request, pk=None):
-        user_serializer = UserSerializer(data=request.data)
+        user_serializer = UserSerializer(data=request.data, partial=True)
         user_serializer.is_valid(raise_exception=True)
 
         with grpc.insecure_channel('localhost:50051') as channel:
             stub = account_pb2_grpc.UserControllerStub(channel)
+            grpc_request = account_pb2.User(id=pk,
+                                            username=request.data.get('username'),
+                                            password=request.data.get('password'),
+                                            email=request.data.get('email'))
             try:
-                response = stub.Update(account_pb2.User(id=pk,
-                                                        username=request.data.get('username'),
-                                                        email=request.data.get('email')))
+                response = stub.Update(grpc_request)
             except _InactiveRpcError as exception:
                 return Response(exception.details(), status=status.HTTP_404_NOT_FOUND)
 

@@ -4,6 +4,7 @@ package account;
 
 import "google/protobuf/empty.proto";
 import "google/protobuf/struct.proto";
+import "google/protobuf/wrappers.proto";
 
 service UserController {
     rpc List(UserListRequest) returns (stream User) {}
@@ -11,6 +12,7 @@ service UserController {
     rpc Retrieve(UserRetrieveRequest) returns (User) {}
     rpc Update(User) returns (User) {}
     rpc Destroy(User) returns (google.protobuf.Empty) {}
+    rpc PartialUpdate(UserPartialUpdateRequest) returns (User) {}
 }
 
 message User {
@@ -18,6 +20,14 @@ message User {
     string username = 2;
     string email = 3;
     string password = 4;
+    repeated int32 groups = 5;
+}
+
+message UserPartialUpdateRequest {
+    int32 id = 1;
+    google.protobuf.StringValue username = 2;
+    google.protobuf.StringValue email = 3;
+    google.protobuf.StringValue password = 4;
     repeated int32 groups = 5;
 }
 

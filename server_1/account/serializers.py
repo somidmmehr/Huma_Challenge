@@ -13,11 +13,14 @@ class UserProtoSerializer(proto_serializers.ModelProtoSerializer):
             'password': {'write_only': True}
         }
 
-    def validate(self, attrs):
-        if CustomUser.objects.filter(email=attrs.get('email')).first():
+    def validate_email(self, value):
+        if self.instance and (value == self.instance.email or value is None):
+            return value
+
+        if CustomUser.objects.filter(email=value).first():
             raise serializers.ValidationError("Email has been used before!")
 
-        return attrs
+        return value
 
     def create(self, validated_data):
         password = validated_data.pop('password', None)

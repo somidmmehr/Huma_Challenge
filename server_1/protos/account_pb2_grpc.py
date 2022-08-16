@@ -40,6 +40,11 @@ class UserControllerStub(object):
                 request_serializer=protos_dot_account__pb2.User.SerializeToString,
                 response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
                 )
+        self.PartialUpdate = channel.unary_unary(
+                '/account.UserController/PartialUpdate',
+                request_serializer=protos_dot_account__pb2.UserPartialUpdateRequest.SerializeToString,
+                response_deserializer=protos_dot_account__pb2.User.FromString,
+                )
 
 
 class UserControllerServicer(object):
@@ -75,6 +80,12 @@ class UserControllerServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def PartialUpdate(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_UserControllerServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -102,6 +113,11 @@ def add_UserControllerServicer_to_server(servicer, server):
                     servicer.Destroy,
                     request_deserializer=protos_dot_account__pb2.User.FromString,
                     response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+            ),
+            'PartialUpdate': grpc.unary_unary_rpc_method_handler(
+                    servicer.PartialUpdate,
+                    request_deserializer=protos_dot_account__pb2.UserPartialUpdateRequest.FromString,
+                    response_serializer=protos_dot_account__pb2.User.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -195,5 +211,22 @@ class UserController(object):
         return grpc.experimental.unary_unary(request, target, '/account.UserController/Destroy',
             protos_dot_account__pb2.User.SerializeToString,
             google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def PartialUpdate(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/account.UserController/PartialUpdate',
+            protos_dot_account__pb2.UserPartialUpdateRequest.SerializeToString,
+            protos_dot_account__pb2.User.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
