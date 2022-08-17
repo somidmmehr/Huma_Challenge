@@ -11,7 +11,8 @@ Consists of following parts:</p>
 <h3>How to Run:</h3>
 <p>In root folder of project run command <br/>
 <code>python manage.py grpcrunserver --dev</code><br/>
-The default port would be <code>:5001</code>, if changed remember to also change the connection port in front-end.
+The default port would be <code>:50051</code>,
+if changed remember to also change the connection port in front-end or back-end services.
 </p>
 
 <hr/>
