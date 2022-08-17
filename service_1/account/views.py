@@ -9,14 +9,14 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from account.models import CustomUser
 from account.serializers import UserSerializer, LoginUserSerializer
-from protos import account_pb2_grpc, account_pb2
+from protos import account_pb2_grpc, account_pb2, gRPC_SERVER_CONNECTION
 
 
 class UserViewSet(viewsets.ViewSet):
     permission_classes = [IsAuthenticated]
 
     def list(self, request):
-        with grpc.insecure_channel('localhost:50051') as channel:
+        with grpc.insecure_channel(gRPC_SERVER_CONNECTION) as channel:
             stub = account_pb2_grpc.UserControllerStub(channel)
             try:
                 response = stub.List(account_pb2.UserListRequest())
@@ -30,7 +30,7 @@ class UserViewSet(viewsets.ViewSet):
         user_serializer = UserSerializer(data=request.data)
         user_serializer.is_valid(raise_exception=True)
 
-        with grpc.insecure_channel('localhost:50051') as channel:
+        with grpc.insecure_channel(gRPC_SERVER_CONNECTION) as channel:
             stub = account_pb2_grpc.UserControllerStub(channel)
             try:
                 response = stub.Create(account_pb2.User(username=request.data.get('username'),
@@ -43,7 +43,7 @@ class UserViewSet(viewsets.ViewSet):
             return Response(user_serializer.data, status=status.HTTP_201_CREATED)
 
     def retrieve(self, request, pk=None):
-        with grpc.insecure_channel('localhost:50051') as channel:
+        with grpc.insecure_channel(gRPC_SERVER_CONNECTION) as channel:
             stub = account_pb2_grpc.UserControllerStub(channel)
             try:
                 response = stub.Retrieve(account_pb2.UserRetrieveRequest(id=pk))
@@ -57,7 +57,7 @@ class UserViewSet(viewsets.ViewSet):
         user_serializer = UserSerializer(data=request.data, partial=True)
         user_serializer.is_valid(raise_exception=True)
 
-        with grpc.insecure_channel('localhost:50051') as channel:
+        with grpc.insecure_channel(gRPC_SERVER_CONNECTION) as channel:
             stub = account_pb2_grpc.UserControllerStub(channel)
             grpc_request = account_pb2.User(id=pk,
                                             username=request.data.get('username'),
@@ -72,7 +72,7 @@ class UserViewSet(viewsets.ViewSet):
             return Response(user_serializer.data, status=status.HTTP_202_ACCEPTED)
 
     def destroy(self, request, pk=None):
-        with grpc.insecure_channel('localhost:50051') as channel:
+        with grpc.insecure_channel(gRPC_SERVER_CONNECTION) as channel:
             stub = account_pb2_grpc.UserControllerStub(channel)
             try:
                 stub.Destroy(account_pb2.UserRetrieveRequest(id=pk))
@@ -90,7 +90,7 @@ class LoginView(APIView):
 
         user = authenticate(username=data['username'], password=data['password'])
         if not user:
-            with grpc.insecure_channel('localhost:50051') as channel:
+            with grpc.insecure_channel(gRPC_SERVER_CONNECTION) as channel:
                 stub = account_pb2_grpc.UserControllerStub(channel)
                 grpc_request = account_pb2.UserRetrieveRequest()
                 grpc_request.username.value = request.data.get('username')
